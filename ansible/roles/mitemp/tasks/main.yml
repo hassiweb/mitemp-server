@@ -25,7 +25,15 @@
     src: "{{item}}"
     dest: /home/pi/mitemp/
   with_fileglob:
-    - "*"
+    - "*.sh"
+    - "mac_list.txt"
+
+- name: Copy an InfluxDB configuration file
+  copy:
+    src: "{{item}}"
+    dest: /home/pi/mitemp/conf/
+  with_fileglob:
+    - "influxdb.conf"
 
 - name: Include vars
   include_vars: "{{inventory_hostname}}.yml"
