@@ -1,0 +1,2 @@
+mitemp_measurement_cron_min: "5-59/10"
+mitemp_sender_cron_min: "0-59/10"

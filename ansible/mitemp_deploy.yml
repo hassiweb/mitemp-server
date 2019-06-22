@@ -1,0 +1,7 @@
+---
+- name: Deploy mitemp and configure crontab to do mitemp
+  hosts: raspberry_pi
+  become: true
+  roles:
+    - name: mitemp
+      tags: mitemp

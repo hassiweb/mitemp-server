@@ -1,0 +1,43 @@
+---
+- name: Make a directory for data of mitemp
+  file: path=/home/pi/mitemp/data state=directory
+
+- name: Install docker via pip
+  pip:
+    name:
+      - docker
+
+- name: Pull hassiweb/mitemp docker container
+  become: yes
+  docker_image:
+    name: hassiweb/mitemp
+    source: pull
+
+- name: Pull hassiweb/mitemp-sender docker container
+  become: yes
+  docker_image:
+    name: hassiweb/mitemp-sender
+    source: pull
+  tags: test
+
+- name: Copy shell scripts to run mitemp and sender
+  copy:
+    src: "{{item}}"
+    dest: /home/pi/mitemp/
+  with_fileglob:
+    - "*"
+
+- name: Include vars
+  include_vars: "{{inventory_hostname}}.yml"
+
+- name: Configure crontab to run mitemp on the containers
+  cron:
+    name: Run mitemp measurement
+    minute: "{{mitemp_measurement_cron_min}}"
+    job: "sh /home/pi/mitemp/run_mitemp.sh"
+
+- name: Configure crontab to run mitemp_sendoer
+  cron:
+    name: Run mitemp_sender
+    minute: "{{mitemp_sender_cron_min}}"
+    job: "sh /home/pi/mitemp/run_mitemp_sender.sh"
