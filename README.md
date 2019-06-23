@@ -15,20 +15,34 @@ All instructions are run on the Linux server.
 ### 3. Modify some configurations
 1. Sensor’s MAC address list
     1. File: [`ansible/roles/mitemp/files/mac_list.txt`](https://github.com/hassiweb/mitemp-server/blob/master/ansible/roles/mitemp/files/mac_list.txt)
-    2. Description: MAC addresses to be scanned at Raspberry Pies 2. InfluxDB connection information
+    2. Description: MAC addresses to be scanned at Raspberry Pies 
+
+2. InfluxDB connection information
     1. File: [`ansible/roles/mitemp/files/influxdb.conf`](https://github.com/hassiweb/mitemp-server/blob/master/ansible/roles/mitemp/files/influxdb.conf)
-    2. Description: Information to connect a database in InfluxDB 3. Time intervals to scan and send temperature and humidity data
+    2. Description: Information to connect a database in InfluxDB 
+
+3. Time intervals to scan and send temperature and humidity data
     1. File: [`ansible/roles/mitemp/vars/<Raspberry Pi\'s host name/IP 
 address>.yml`](https://github.com/hassiweb/mitemp-server/blob/master/ansible/roles/mitemp/vars/192.168.0.31.yml)
     2. Description: Cron is used to run containers to scan data and send data.  This time intervals are defined in this file.  `mitemp_measurement_cron_min` defines 
 the time interval mitemp_measurement_cron_min to run the container to scan data.  `mitemp_sender_cron_min` defines the time interval in minutes to run the container 
-to send data.  The format of both variables follows the crontab format. 4. Inventory for Ansible targets (i.e. Raspberry Pies)
+to send data.  The format of both variables follows the crontab format. 
+
+4. Inventory for Ansible targets (i.e. Raspberry Pies)
     1. File: [`ansible/inventory/inventory.ini`](https://github.com/hassiweb/mitemp-server/blob/master/ansible/inventory/inventory.ini)
     2. Description: This follows Ansible definition.
+
 ### 4. Run ansible-playbook
-``` $ ansible-playbook -i inventory/inventory.ini mitemp_deploy.yml ``` After this deployment, Raspberry Pies start scanning and sending data to the InfluxDB on the 
-server. You can confirm the data with a commend below: ``` $ curl -G 'http://<Your server's host name>:8087/query?pretty=true' --data-urlencode "db=mitemp" 
---data-urlencode 'q=SELECT * from "<Sensor's MAC address>"' ```
+``` 
+$ ansible-playbook -i inventory/inventory.ini mitemp_deploy.yml 
+``` 
+
+After this deployment, Raspberry Pies start scanning and sending data to the InfluxDB on the 
+server. You can confirm the data with a commend below: 
+
+``` $ curl -G 'http://<Your server's host name>:8087/query?pretty=true' --data-urlencode "db=mitemp" --data-urlencode 'q=SELECT * from "<Sensor's MAC address>"' 
+```
+
 ### 5. Visualize temperature and humidity data on Grafana
 Open Grafana on a browser and type your server’s host name and the port number of the Grafana container (default is 8087). With some configurations of Grafana, you 
 can show a dashboard like below.
