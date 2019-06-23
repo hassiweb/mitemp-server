@@ -40,7 +40,8 @@ $ ansible-playbook -i inventory/inventory.ini mitemp_deploy.yml
 After this deployment, Raspberry Pies start scanning and sending data to the InfluxDB on the 
 server. You can confirm the data with a commend below: 
 
-``` $ curl -G 'http://<Your server's host name>:8087/query?pretty=true' --data-urlencode "db=mitemp" --data-urlencode 'q=SELECT * from "<Sensor's MAC address>"' 
+``` 
+$ curl -G 'http://<Your server's host name>:8087/query?pretty=true' --data-urlencode "db=mitemp" --data-urlencode 'q=SELECT * from "<Sensor's MAC address>"' 
 ```
 
 ### 5. Visualize temperature and humidity data on Grafana
